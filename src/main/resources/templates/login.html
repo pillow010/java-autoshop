@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>Login Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f1f1f1;
+        }
+
+        .login-container {
+            margin: auto;
+            width: 40%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Login Form</h2>
+    <form action="/login" method="post">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" id="username" required>
+
+        <label for="password"><b>Password</b></label>
+        <div class="password-input">
+            <input type="password" placeholder="Enter Password" name="password" id="password" required>
+            <label for="show-password" id="show-password-label">Show password</label>
+            <input type="checkbox" id="show-password">
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+<script>
+    const passwordInput = document.getElementById('password');
+    const showPasswordCheckbox = document.getElementById('show-password');
+    const showPasswordLabel = document.getElementById('show-password-label');
+
+    showPasswordLabel.addEventListener('click', () => {
+        passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+    });
+
+    showPasswordCheckbox.addEventListener('click', () => {
+        passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+    });
+
+</script>
+</body>
+</html>
+
+</html>
+
+
+
