@@ -2,14 +2,13 @@ package com.automotoshop.Service;
 
 import com.automotoshop.Repository.UserRepository;
 import com.automotoshop.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  A service class that implements Spring Security's UserDetailsService interface
@@ -18,18 +17,14 @@ import java.util.ArrayList;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     /**
      Constructor for the UserDetailsServiceImpl class.
      @param userRepository the repository for user entities.
-     @param passwordEncoder the password encoder for encrypting user passwords.
      */
-    public UserDetailsServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -38,15 +33,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      @return the user details object containing user-specific data for authentication.
      @throws UsernameNotFoundException if no user is found with the given username.
      */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException ("User not found");
+        @Override
+        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+            Optional<User> user = Optional.ofNullable (userRepository.findByUsername (username));
+            return user.map(u -> new org.springframework.security.core.userdetails.User(u.getUsername(), u.getPassword(),
+                    new ArrayList<> ())).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                new ArrayList<> ());
-    }
 
 }
 
